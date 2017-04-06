@@ -1,0 +1,37 @@
+{
+	"manifest_version": 2,
+	"name": "A Certain Manga Reader",
+	"version": "2.99.0",
+
+	"description": "Read and receive notifications for your mangas with ease.",
+	"homepage_url": "https://github.com/saishy/certainmangareader",
+	"author": "Saishy (http://certainprogrammer.com)",
+
+	"icons": {
+		"64": "img/icon-64.png",
+		"32": "img/icon-32.png"
+	},
+
+	"background": {
+		"page": "lib/main.html"
+	},
+
+	"browser_action": {
+		"default_icon": "img/icon-32.png",
+		"default_title": "A Certain Manga Reader",
+		"default_popup": "popup/main_panel.html"
+	},
+
+	"permissions": [
+		"storage",
+		"alarms"
+	],
+
+	"content_scripts":[
+		{
+			"matches": ["*://*.mangafox.me/*"],
+			"js": ["content_scripts/mangafox.js"],
+			"css": ["content_scripts/mangafox.css"]
+		}
+	]
+}
