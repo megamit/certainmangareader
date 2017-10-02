@@ -568,4 +568,14 @@ CMREADER.ListenMessages = function ListenMessages(message){
 	}
 }
 
+// stupid inconsistencies https://discourse.mozilla.org/t/webextension-xmlhttprequest-issues-no-cookies-or-referrer-solved/11224/18
+CMREADER.getXMLHttp = function getXMLHttp(){
+   try {
+      return XPCNativeWrapper(new window.wrappedJSObject.XMLHttpRequest());
+   }
+   catch(evt){
+      return new XMLHttpRequest();
+   }
+}
+
 browser.runtime.onMessage.addListener(CMREADER.ListenMessages);

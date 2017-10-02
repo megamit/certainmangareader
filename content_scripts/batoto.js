@@ -25,7 +25,8 @@ CMREADER.StripImageFromDOM = function StripImageFromDOM(DOMData) {
 };
 
 CMREADER.LoadImageAtPage = function LoadImageAtPage(pageNumber) {
-	var request = new XMLHttpRequest;
+	console.debug("- [LoadingImageAtPage] Start -");
+	var request = CMREADER.getXMLHttp()
 	var pageUrl = "/areader?id=" + CMREADER.options.cid + "&p=" + (parseInt(pageNumber) + 1);
 	//pageUrl = pageUrl.replace("http://", "");
 	//pageUrl = pageUrl.replace("bato.to", "");
@@ -126,6 +127,7 @@ CMREADER.GetCID = function GetCID() {
 CMREADER.GetMangaCover = function GetMangaCover() {
 	var re = /bato\.to(.*comic\/_\/comics\/.*)/i;
 	var m, href;
+	var proto =  window.top.location.protocol
 
 	var container = document.getElementsByClassName('moderation_bar');
 	if (container && container[0]) {
@@ -142,14 +144,15 @@ CMREADER.GetMangaCover = function GetMangaCover() {
 		if (href) {
 			m = re.exec(href);
 			if (m && m[1]) {
-				CMREADER.options.mangaURL = "http://bato.to" + m[1];
+				
+				CMREADER.options.mangaURL = proto + "//bato.to" + m[1];
 
 				var request = new XMLHttpRequest;
 
 				request.open("GET", CMREADER.options.mangaURL, true);
 				request.responseType = "document";
 
-				//console.log("- REQUESTING MANGA COVER -");
+				console.log("- REQUESTING MANGA COVER '" + CMREADER.options.mangaURL + "' -");
 
 				request.onreadystatechange = function() {
 					if (request.readyState == 4 && request.status == 200) {
@@ -163,8 +166,8 @@ CMREADER.GetMangaCover = function GetMangaCover() {
 							while(count--) {
 								result = re.exec(imgs[count].src);
 								if (result && result[0]) {
-									CMREADER.options.mangaCoverSRC = "http://" + result[0];
-									//console.log("- MANGA COVER GOT -");
+									CMREADER.options.mangaCoverSRC = proto + "//" + result[0];
+									console.log("- MANGA COVER GOT -");
 									return;
 								}
 							}
